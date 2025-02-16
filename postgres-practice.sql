@@ -165,8 +165,18 @@ INSERT INTO orders (order_id, user_id, order_date, amount) VALUES
 BEGIN TRANSACTION; -- start transaction(BEGIN/BEGIN TRANSACTION);
 DELETE FROM orders WHERE user_id=5;
 UPDATE orders set user_id=4 WHERE order_id=110;
-ROLLBACK; -- after running ROLLBACK, all changes will be returned previous state
+ROLLBACK; -- after running ROLLBACK, all changes will be returned to previous state
 COMMIT; -- after running COMMIT all changes will be permanent
+
+
+-- join between table1 and table2
+SELECT * FROM orders JOIN users on users.user_id=orders.user_id;
+SELECT U.user_id,username,amount FROM orders O JOIN users U on U.user_id=O.user_id; -- JOIN/INNER JOIN are same
+
+SELECT * FROM orders LEFT JOIN users on users.user_id = orders.user_id;-- left table prioritize
+SELECT * FROM orders RIGHT JOIN users on users.user_id = orders.user_id;-- right table prioritize
+SELECT * FROM orders FULL JOIN users on users.user_id = orders.user_id;-- equally both left&right prioritize
+
 
 
 
