@@ -122,3 +122,54 @@ SELECT profession, COUNT(*) AS total_employees_by_profession
 FROM employees
 GROUP BY(profession)
 HAVING COUNT(*)>1;
+
+SELECT name,profession,age FROM employees ORDER BY age ASC;
+SELECT name,profession,age FROM employees ORDER BY age DESC LIMIT 1;
+CREATE TABLE users(
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50),
+    email VARCHAR(30)
+);
+
+CREATE TABLE orders(
+    order_id INT PRIMARY KEY,
+    user_id INT,
+    order_date DATE,
+    amount DECIMAL(10,2),
+    Foreign Key (user_id) REFERENCES users(user_id)
+);
+
+-- Insert Users
+INSERT INTO users (user_id,username, email) VALUES
+(1,'john_doe', 'john@example.com'),
+(2,'alice_smith', 'alice@example.com'),
+(3,'mike_jordan', 'mike@example.com'),
+(4,'emma_brown', 'emma@example.com'),
+(5,'robert_clark', 'robert@example.com');
+
+-- Insert Orders (some with NULL user_id)
+INSERT INTO orders (order_id, user_id, order_date, amount) VALUES
+(101, 1, '2024-02-01', 150.00),
+(102, 2, '2024-02-02', 250.50),
+(103, 3, '2024-02-03', 99.99),
+(104, 4, '2024-02-04', 75.75),
+-- (105, 5, '2024-02-05', 180.20),
+(106, NULL, '2024-02-06', 200.00), 
+(107, 1, '2024-02-07', 300.00),
+(108, NULL, '2024-02-08', 500.50), 
+(109, 3, '2024-02-09', 120.00),
+(110, 2, '2024-02-10', 450.30);
+
+
+-- BEGIN TRANSACTION (or simply BEGIN) is used to execute multiple SQL operations together as a group. If an error occurs, ROLLBACK can be used to cancel all changes, and if everything is correct, COMMIT is used to save the changes permanently.
+BEGIN TRANSACTION; -- start transaction(BEGIN/BEGIN TRANSACTION);
+DELETE FROM orders WHERE user_id=5;
+UPDATE orders set user_id=4 WHERE order_id=110;
+ROLLBACK; -- after running ROLLBACK, all changes will be returned previous state
+COMMIT; -- after running COMMIT all changes will be permanent
+
+
+
+
+
+
